@@ -1,0 +1,113 @@
+{% extends "admin/layout.html" %}
+
+<head>
+    {% block title1 %}{{ super() }}{% endblock %} {% block title %}admin add{% endblock %}
+    <meta charset="UTF-8">
+    <style>
+        {
+            % block styles %
+        }
+
+            {
+                {
+                super()
+            }
+        }
+
+            {
+            % endblock %
+        }
+    </style>
+</head>
+
+<body>
+    {% block body %} {{ super() }}
+
+    <br>
+    <div style="height: 60px"></div>
+    <strong>
+        <p align="center" style="font-size:20px;">欢迎来到zenjoy!!!
+            <script>setInterval("timenow.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());", 10);
+            </script>
+            <div id="timenow" align="center" style="font-size:20px;"></div>
+        </p>
+    </strong>
+    <br/>
+    <div style="width:100%;text-align:center;">
+        <form action="" method="POST">
+            Username：
+            <input type="text" name="username" /> Email:
+            <input type="text" name="email" /> Password：
+            <input type="password" name="password" />
+            <select name="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <input type="submit" value="提      交" />
+        </form>
+
+        <div class="container" style="text-align:center;">
+            <br> {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <p style="color:red">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}</p>
+            </div>
+            {% endfor %} {% block page_content %}{% endblock %}
+            <br/>
+        </div>
+
+        <table width="60%" align="center" style="margin-top: 40px;" cellpadding="0">
+            <tr>
+                <td valign="top">{% if admins%}
+                    <table border="1px" cellspacing="0" cellpadding="10" align="center">
+                        <tr>
+                            <th>AdminName</th>
+                            <th>Email</th>
+                            <th>Delete</th>
+                        </tr>
+                        {% for u in admins %}
+                        <tr>
+                            <td>{{u.username}}</td>
+                            <td>{{u.email}}</td>
+                            <td>
+                                <a href="{{url_for('admin.delete',username=u.username)}}">
+                                    <button>删 除</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </td>
+                <td valign="top">
+                    {% if users %}
+                    <table border="1px" cellspacing="0" cellpadding="10" align="center">
+                        <tr>
+                            <th>UserName</th>
+                            <th>Email</th>
+                            <th>Delete</th>
+                        </tr>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{u.username}}</td>
+                            <td>{{u.email}}</td>
+                            <td>
+                                <a href="{{url_for('admin.delete',username=u.username)}}">
+                                    <button>删 除</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endblock %}
+
+
+</body>
+
+</html>

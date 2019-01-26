@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="600">
+    <title>Admin show</title>
+
+    <style>
+        p {
+            margin: 0 auto
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a,
+        .dropbtn {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover,
+        .dropdown:hover .dropbtn {
+            background-color: #111;
+        }
+
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 触发弹窗图片的样式 */
+
+        #myImg {
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #myImg:hover {
+            opacity: 0.7;
+        }
+
+        /* 弹窗背景 */
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+
+        /* 图片 */
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        /* 文本内容 */
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        /* 添加动画 */
+
+        .modal-content,
+        #caption {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+
+        /* 关闭按钮 */
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 小屏幕中图片宽度为 100% */
+
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <a class="active" href="/admin/index">zenjoy主页</a>
+        </li>
+        <li>
+            <a href="/user/show">数据监控(user)</a>
+        </li>
+        <li>
+            <a href="/admin/show">数据监控(admin)</a>
+        </li>
+        <div class="dropdown">
+            <a href="#" class="dropbtn">管理功能</a>
+            <div class="dropdown-content">
+                <a href="/admin/add">用户管理</a>
+                <!-- <a href="#">链接 2</a>
+                <a href="#">链接 3</a> -->
+            </div>
+        </div>
+    </ul>
+
+    <p align="right">{{current_user}}
+        <a href="logout">
+            <img border="0" src="{{ url_for('static',filename='admin/images/logout.jpg')}}" alt="logout" width="60" height="30" align="middle">
+        </a>
+    </p>
+    <h1 align="center">【{{date}}】配置及监控状态</h1>
+
+    <!-- <script>setInterval("timenow.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+    </script>
+    <div id="timenow" align="right" style="padding-right:60px"></div> -->
+
+
+    {% if settings %}
+    <table border="1px" align="center" cellspacing="0" cellpadding="6" background="{{ url_for('static',filename='admin/images/table.jpg')}}"
+        width="1148" ;>
+        <tr>
+            <th>app_name</th>
+            <th>platform</th>
+            <th>current</th>
+            <th>max_line</th>
+            <th>times</th>
+            <th>total_times</th>
+            <th>last_mail_time</th>
+            <th>alarm_line</th>
+            <th>alarm_type</th>
+            <th>alarm_min_line</th>
+            <th>alarm_level</th>
+            <th>alarm_iap</th>
+            <!-- <th>data_ts</th> -->
+        </tr>
+
+        {% for set in settings %}
+        <tr>
+            <td align="center">{{set.app_name}}</td>
+            <td align="center">{{set.platform}}</td>
+            <td align="center">{{set.current}}</td>
+            <td align="center">{{set.max_line}}</td>
+            <td align="center">{{set.times}}</td>
+            <td align="center">{{set.total_times}}</td>
+            <td align="center">{{set.last_mail_time}}</td>
+            <td align="center">{{set.alarm_line}}</td>
+            <td align="center">{{set.alarm_type}}</td>
+            <td align="center">{{set.alarm_min_line}}</td>
+            <td align="center">{{set.alarm_level}}</td>
+            <td align="center">{{set.alarm_iap}}</td>
+            <!-- <td align="center">{{set.data_ts}}</td> -->
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <td colspan="12">
+
+                <p style="font-size:80%">每出现一次预警，【current】数值增加1，当【current】=【max_line】则发送一次邮件！</p>
+                <p style="font-size:80%">【times】发送一次邮件则数值增加1，若达到9则重置；</p>
+                <p style="font-size:80%">【total_times】是指统计日发送邮件的次数；</p>
+                <p style="font-size:80%">【last_mail_time】最近一次发送邮件报警的时间，默认1987-01-01</p>
+                <p style="font-size:80%">【alarm_line】若同时刻数据与昨日数据的环比低于次数据，则进行报警。</p>
+                <p style="font-size:80%">【alarm_type】0代表监控level和iap，1代表只监控level，2代表只监控iap。</p>
+                <p align="right" style="padding-right:20px">power by chunyang.xu
+                    <a target="_blank" href="http://sighttp.qq.com/authd?IDKEY=f36a98894c04255e4c9aa3334c8107d55e0d006e2749e336">
+                        <img border="0" style="display: inline-block; vertical-align: middle" src="http://wpa.qq.com/imgd?IDKEY=f36a98894c04255e4c9aa3334c8107d55e0d006e2749e336&pic=51"
+                            alt="点击这里给我发消息" title="点击这里给我发消息">
+                    </a>
+                </p>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+
+    <h2 align="center">【{{date}}】各版本实时数据</h2>
+    <table border="1px" align="center" cellspacing="0" cellpadding="6" width="1148" ;>
+        <tr>
+            <td>
+                <img border="0" id="myImg" src="/admin/wordimages/word_production(ios).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg1" src="/admin/wordimages/word_production(googleplay).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg2" src="/admin/wordimages/word_production(web).png" alt="" align="middle" width="100%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img border="0" id="myImg3" src="/admin/wordimages/word_v4_production(ios).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg4" src="/admin/wordimages/word_v4_production(googleplay).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg5" src="/admin/wordimages/word_v4_production(web).png" alt="" align="middle" width="100%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img border="0" id="myImg6" src="/admin/wordimages/word_v5_production(ios).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg7" src="/admin/wordimages/word_v5_production(googleplay).png" alt="" align="middle" width="100%">
+            </td>
+            <td>
+                <img border="0" id="myImg8" src="/admin/wordimages/word_v5_production(web).png" alt="" align="middle" width="100%">
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+
+        <!-- 关闭按钮 -->
+        <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+        <!-- 弹窗内容 -->
+        <img class="modal-content" id="img01">
+
+        <!-- 文本描述 -->
+        <div id="caption"></div>
+    </div>
+
+    <script>
+
+
+        // 获取id
+        var alist = document.getElementsByTagName("img");
+        var len = alist.length;
+        for (var i = 0; i < len; i++) {
+            alist[i].onclick = function () {
+                var picid = this.id
+                if (this.id.match('myImg'))
+                    {// 获取弹窗
+                    var modal = document.getElementById('myModal')
+                    // 获取图片插入到弹窗 - 使用 "alt" 属性作为文本部分的内容
+                    var img = document.getElementById(picid)
+                    var modalImg = document.getElementById("img01")
+                    var captionText = document.getElementById("caption")
+                    // img.onclick = function () {
+                    modal.style.display = "block"
+                    modalImg.src = this.src
+                    captionText.innerHTML = this.alt
+                    // }
+                    }
+
+                // 获取 <span> 元素，设置关闭按钮
+                var span = document.getElementsByClassName("close")[0]
+
+                // 当点击 (x), 关闭弹窗
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+    </script>
+
+
+
+
+</body>
+
+</html>
