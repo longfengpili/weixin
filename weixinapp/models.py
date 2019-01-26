@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-26 18:11:11
+@LastEditTime: 2019-01-26 19:22:20
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -26,8 +26,8 @@ class Friend(db.Document):
     f_city = db.StringField()
     create_at = db.DateTimeField(default=datetime.now)
 
-    def __repr__(self):
-        return f'<【{self.name}】Friend[{self.f_remarkname}]>'
+    def __unicode__(self):
+        return f'<【{self.name}】Friend:{self.f_remarkname}>'
 
 
 

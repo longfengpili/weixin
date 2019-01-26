@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:30:56
-@LastEditTime: 2019-01-26 18:10:33
+@LastEditTime: 2019-01-26 19:22:50
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -16,8 +16,10 @@ weixin = Blueprint('weixin',__name__)
 @weixin.route('/index')
 def index():
     user = { 'nickname': 'Miguel' } # fake user
-    friend = Friend(name='test',f_nickname='test2')
-    print(friend.name)
+    friend = Friend(name='花儿',f_username='test2',f_remarkname='春天')
+    friend.save()
+    
+    print(friend)
     return render_template("weixin/index.html",
         title = 'Home',
         user = user)
