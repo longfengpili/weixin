@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-27 13:42:06
+@LastEditTime: 2019-01-27 18:07:05
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -40,6 +40,7 @@ class Friend(db.Document):
 class User(db.Document):
     meta = {
         'collection': 'user',
+        'ordering': 'nickname'
     }
     myname = db.StringField(required=True)
     username = db.StringField(required=True)

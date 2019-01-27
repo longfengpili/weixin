@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-27 08:43:40
-@LastEditTime: 2019-01-27 14:52:22
+@LastEditTime: 2019-01-27 18:14:05
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -30,37 +30,55 @@ def check_login():
     status = itchat.check_login(uuid)
     if status == '200':
         web_init = itchat.web_init()
+        itchat.get_contact(True)
         return redirect(url_for('weixin.show'))
     elif status == '201':
         return render_template('weixin/login.html',uuid=uuid,weixin='weixin',note='请在手机上确认登陆！')
     else:
         return render_template('weixin/login.html',uuid=uuid,weixin='weixin',note='请使用微信扫描二维码进行登陆！')
 
+@weixin.route('/get_friends')  
 def get_friends():
     friends = itchat.get_friends(True)
     myname = friends[0]['NickName']
     friend = Friend.objects(myname=myname).first()
-    if not friend:
-        for friend in friends:
-            username = friend.get('UserName',None)
-            nickname = friend.get('NickName',None)
-            remarkname = friend.get('RemarkName',None)
-            sex = friend.get('Sex',None)
-            signature = friend.get('Signature',None)
-            province = friend.get('Province',None)
-            city = friend.get('City',None)
+    for friend in friends:
+        username = friend.get('UserName',None)
+        nickname = friend.get('NickName',None)
+        remarkname = friend.get('RemarkName',None)
+        sex = friend.get('Sex',None)
+        signature = friend.get('Signature',None)
+        province = friend.get('Province',None)
+        city = friend.get('City',None)
+
+        f = Friend.objects(nickname=nickname,remarkname=remarkname).first()
+        if not f:
             friend = Friend(myname=myname,username=username,nickname=nickname,remarkname=remarkname,
                                 sex=sex,signature=signature,province=province,city=city)
             friend.save()
     
-    friends = Friend.objects().all()
-    return friends
+    return redirect(url_for('weixin.show'))
 
 @weixin.route('/show')  
 def show(): 
-    new_friends = []
-    friends = Friend.objects().all()
+    friends = Friend.objects().all().order_by('nickname')
     return render_template('weixin/show.html',friends=friends)
+
+@weixin.route('/update_friend/<username>')
+def update_friend(username):
+    remarkname = request.args.get('remarkname')
+    friend = Friend.objects(username=username).first()
+    if friend:
+        friend.update(remarkname=remarkname)
+    return redirect(url_for('weixin.show'))
+
+@weixin.route('/delete_friend/<username>')
+def delete_friend(username):
+    friend = Friend.objects(username=username).first()
+    if friend:
+        friend.delete()
+    return redirect(url_for('weixin.show'))
+
 
     
 

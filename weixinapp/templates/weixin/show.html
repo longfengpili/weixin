@@ -1,7 +1,7 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-27 12:09:41
- * @LastEditTime: 2019-01-27 14:50:29
+ * @LastEditTime: 2019-01-27 17:37:52
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -12,18 +12,34 @@
         <title>login</title>
     </head>
     <body>
+            <a href="{{url_for('weixin.get_friends')}}">
+                    <button>get_friends</button>
+            </a>
+
+
             {% if friends %}
             <table border="1px" align="center" cellspacing="0" cellpadding="6" width="100" ;>
                 <tr>
                     <th>nickname</th>
                     <th>remarkname</th>
+                    <th colspan="2">action</th>
                 </tr>
         
                 {% for friend in friends %}
                 <tr>
                     {% if friend.remarkname %}
+                    
                         <td align="center">{{friend.nickname}}</td>
-                        <td align="center">{{friend.remarkname}}</td>
+                        <form action="update_friend/{{friend.username}}">
+                        <td align="center"><input type="text" name="remarkname" value="{{friend.remarkname}}"/></td>
+                        <td align="center"><input type="submit" name="update" value="update"/></td>
+                        </form>
+                        <td>
+                            <a href="{{url_for('weixin.delete_friend',username=friend.username)}}">
+                                <button>delete</button>
+                            </a>
+                        </td>
+                    
                     {% endif %}
                 </tr>
                 {% endfor %}
