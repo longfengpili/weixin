@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-26 19:22:20
+@LastEditTime: 2019-01-27 13:42:06
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -16,18 +16,51 @@ class Friend(db.Document):
     meta = {
         'collection': 'friend',
     }
-    name = db.StringField(required=True)
-    f_username = db.StringField(required=True)
-    f_nickname = db.StringField()
-    f_remarkname = db.StringField()
-    f_sex = db.StringField()
-    f_signature = db.StringField()
-    f_province = db.StringField()
-    f_city = db.StringField()
+    myname = db.StringField(required=True)
+    username = db.StringField(required=True)
+    nickname = db.StringField()
+    remarkname = db.StringField()
+    sex = db.IntField()
+    signature = db.StringField()
+    province = db.StringField()
+    city = db.StringField()
     create_at = db.DateTimeField(default=datetime.now)
+    update_at = db.DateTimeField(default=datetime.now)
 
-    def __unicode__(self):
-        return f'<【{self.name}】Friend:{self.f_remarkname}>'
+    def __str__(self):
+        if self.remarkname == '':
+            self.remarkname = self.nickname
+        return f'<【{self.myname}】Friend:{self.remarkname}>'
+    
+    def __repr__(self):
+        if self.remarkname == '':
+            self.remarkname = self.nickname
+        return f'<【{self.myname}】Friend:{self.remarkname}>'
+
+class User(db.Document):
+    meta = {
+        'collection': 'user',
+    }
+    myname = db.StringField(required=True)
+    username = db.StringField(required=True)
+    nickname = db.StringField()
+    remarkname = db.StringField()
+    sex = db.IntField()
+    signature = db.StringField()
+    province = db.StringField()
+    city = db.StringField()
+    create_at = db.DateTimeField(default=datetime.now)
+    update_at = db.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        if self.remarkname == '':
+            self.remarkname = self.nickname
+        return f'<【{self.myname}】user:{self.remarkname}>'
+    
+    def __repr__(self):
+        if self.remarkname == '':
+            self.remarkname = self.nickname
+        return f'<【{self.myname}】user:{self.remarkname}>'
 
 
 
