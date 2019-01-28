@@ -1,7 +1,7 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-26 15:28:05
- * @LastEditTime: 2019-01-27 11:56:10
+ * @LastEditTime: 2019-01-27 19:55:18
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -10,11 +10,12 @@
  <html>
     <head>
       <title>login</title>
-      <meta http-equiv="refresh" content="5;url=check_login?uuid={{uuid}}"> 
+      <meta http-equiv="refresh" content="2;url=check_login?uuid={{uuid}}"> 
     </head>
     <body>
+      <!-- {{uuid}} -->
       <div style="text-align:center;">
-        <img src="{{ url_for('static',filename='weixin/QRcode/'+weixin+'.png')}}" style="display: inline-block;"/>
+        <img src="{{url_for('static',filename='weixin/QRcode/'+qr+'.png')}}" alt="qr"/>
     </div>
     <div style="text-align:center;">
       {{note}}

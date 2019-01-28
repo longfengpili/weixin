@@ -1,50 +1,66 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-27 12:09:41
- * @LastEditTime: 2019-01-27 17:37:52
+ * @LastEditTime: 2019-01-28 09:20:37
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
  * @github: https://github.com/longfengpili
  -->
 <html>
-    <head>
-        <title>login</title>
-    </head>
-    <body>
-            <a href="{{url_for('weixin.get_friends')}}">
-                    <button>get_friends</button>
-            </a>
 
+<head>
+    <title>login</title>
+    <script>
+        function get_inputvalue(){
+            var inputValue = document.getElementById("festival").value;
+            // console.log(inputValue);
+            // alert(inputValue);
+            return inputValue
+        }
+        document.getElementById("demo").innerHTML = get_inputvalue();
+    </script>
+</head>
 
-            {% if friends %}
-            <table border="1px" align="center" cellspacing="0" cellpadding="6" width="100" ;>
-                <tr>
-                    <th>nickname</th>
-                    <th>remarkname</th>
-                    <th colspan="2">action</th>
-                </tr>
-        
-                {% for friend in friends %}
-                <tr>
-                    {% if friend.remarkname %}
-                    
-                        <td align="center">{{friend.nickname}}</td>
-                        <form action="update_friend/{{friend.username}}">
-                        <td align="center"><input type="text" name="remarkname" value="{{friend.remarkname}}"/></td>
-                        <td align="center"><input type="submit" name="update" value="update"/></td>
-                        </form>
-                        <td>
-                            <a href="{{url_for('weixin.delete_friend',username=friend.username)}}">
-                                <button>delete</button>
-                            </a>
-                        </td>
-                    
-                    {% endif %}
-                </tr>
-                {% endfor %}
-        
-            </table>
+<body>
+    
+    <a href="{{url_for('weixin.delete_all')}}"><button>delete_all</button></a>
+    <a href="{{url_for('weixin.get_friends')}}"><button>get_friends</button></a>
+    <a href="{{url_for('weixin.logout')}}"><button>logout</button></a>
+
+    
+    <p id="demo"></p>
+
+    {% if friends %}
+    <td align="center"><input type="text" name="note" value="节日快乐" id="festival"/></td>
+    <table border="1px" align="center" cellspacing="0" cellpadding="6" width="100" ;>
+        <tr>
+            <th>nickname</th>
+            <th>remarkname</th>
+            <th>notenum</th>
+            <th colspan="2">action</th>
+        </tr>
+        {% for friend in friends %}
+        <tr>
+            {% if friend.remarkname %}
+            <td align="center">{{friend.nickname}}</td>
+            <form action="update_friend/{{friend.username}}"></form>
+            <td align="center"><input type="text" name="remarkname" value="{{friend.remarkname}}" /></td>
+            <td align="center">{{friend.notenum}}</td>
+            <td align="center"><input type="submit" name="update" value="update" /></td>
+            </form>
+            <td>
+                <a href="{{url_for('weixin.delete_friend',username=friend.username)}}"><button>delete</button></a>
+            </td>
+            <td>
+                <a href="{{url_for('weixin.send_friend',username=friend.username,note="get_inputvalue()")}}"><button>send</button></a>
+            </td>
             {% endif %}
-    </body>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+</body>
+
 </html>

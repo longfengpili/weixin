@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-26 16:57:32
+@LastEditTime: 2019-01-28 08:26:12
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -12,8 +12,10 @@ __all__ = ['db', 'login_manager']
 
 from flask import Flask, url_for, request, redirect, render_template
 from flask_mongoengine import MongoEngine
+from datetime import timedelta
 app = Flask(__name__)
 app.config.from_object('config')
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 db = MongoEngine()
 db.init_app(app)
 

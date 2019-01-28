@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-27 18:07:05
+@LastEditTime: 2019-01-28 08:52:52
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -24,6 +24,7 @@ class Friend(db.Document):
     signature = db.StringField()
     province = db.StringField()
     city = db.StringField()
+    notenum = db.IntField(default=0)
     create_at = db.DateTimeField(default=datetime.now)
     update_at = db.DateTimeField(default=datetime.now)
 
@@ -50,6 +51,7 @@ class User(db.Document):
     signature = db.StringField()
     province = db.StringField()
     city = db.StringField()
+    notenum = db.IntField(default=0)
     create_at = db.DateTimeField(default=datetime.now)
     update_at = db.DateTimeField(default=datetime.now)
 
