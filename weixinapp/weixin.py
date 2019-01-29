@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-27 08:43:40
-@LastEditTime: 2019-01-28 09:05:11
+@LastEditTime: 2019-01-29 09:10:04
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -21,17 +21,17 @@ def login():
     picname = 'weixin'
     qr_path = f'./weixinapp/static/weixin/QRcode/{picname}.png'
     uuid = itchat.get_QRuuid()
-    print(f'24{uuid}')
+    # print(f'24{uuid}')
     qrStorage = itchat.get_QR(uuid=uuid,enableCmdQR=True)
     with open(qr_path, 'wb') as f:
         f.write(qrStorage.getvalue())
-    print(f'28{uuid}')
+    # print(f'28{uuid}')
     return render_template('weixin/login.html',uuid=uuid,qr=picname,note='请使用微信扫描二维码进行登陆！')
     
 @weixin.route('/check_login')
 def check_login():
     uuid = request.args.get('uuid',None)
-    print(f'34{uuid}')
+    # print(f'34{uuid}')
     status = itchat.check_login(uuid)
     if status == '200':
         web_init = itchat.web_init()
@@ -104,7 +104,7 @@ def send_friend(username,note):
         print(friend)
         print(note)
         itchat.send_msg(msg=note,toUserName=username)
-        notenum = Friend.objects(username=username).get('notenum',0)
+        notenum = friend.notenum
         friend.update(notenum=notenum + 1)
 
     return redirect(url_for('weixin.show'))
