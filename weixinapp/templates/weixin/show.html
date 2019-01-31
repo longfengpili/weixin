@@ -1,7 +1,7 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-27 12:09:41
- * @LastEditTime: 2019-01-29 08:54:48
+ * @LastEditTime: 2019-01-31 09:23:14
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -11,25 +11,11 @@
 
 <head>
     <title>login</title>
-    <script>
-        function get_inputvalue(){
-            var inputValue = document.getElementById("festival").value;
-            // console.log(inputValue);
-            // alert(inputValue);
-            // document.getElementById("demo").innerHTML = inputValue;
-            document.write(inputValue);
-            // return inputValue
-        }
-        
-    </script>
 </head>
 
 <body>
     <a><script>get_inputvalue()</script></a>
-    <a href="{{url_for('weixin.delete_all')}}"><button>delete_all</button></a>
-    <a href="{{url_for('weixin.get_friends')}}"><button>get_friends</button></a>
     <a href="{{url_for('weixin.logout')}}"><button>logout</button></a>
-
 
     {% if friends %}
     <td align="center"><input type="text" name="note" value="节日快乐" id="festival"/></td>
@@ -38,7 +24,7 @@
             <th>nickname</th>
             <th>remarkname</th>
             <th>notenum</th>
-            <th colspan="2">action</th>
+            <th colspan="3">action</th>
         </tr>
         {% for friend in friends %}
         <tr>
@@ -60,6 +46,9 @@
         {% endfor %}
     </table>
     {% endif %}
+
+
+
 
 </body>
 

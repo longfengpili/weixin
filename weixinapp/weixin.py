@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-27 08:43:40
-@LastEditTime: 2019-01-29 09:10:04
+@LastEditTime: 2019-01-31 08:36:21
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -42,7 +42,7 @@ def check_login():
     else:
         return render_template('weixin/login.html',uuid=uuid,qr='weixin',note='请使用微信扫描二维码进行登陆！')
 
-@weixin.route('/get_friends')  
+# @weixin.route('/get_friends')  
 def get_friends():
     friends = itchat.get_friends(True)
     myname = friends[0]['NickName']
@@ -62,20 +62,27 @@ def get_friends():
                                 sex=sex,signature=signature,province=province,city=city)
             friend.save()
     
-    return redirect(url_for('weixin.show'))
+    # return redirect(url_for('weixin.show'))
 
-@weixin.route('/delete_all')  
+# @weixin.route('/delete_all')  
 def delete_all():
     friends = Friend.objects().all()
     if friends:
         friends.delete()
     
-    return redirect(url_for('weixin.show'))
+    # return redirect(url_for('weixin.show'))
 
 @weixin.route('/show')  
 def show(): 
-    friends = Friend.objects().all().order_by('nickname')
-    return render_template('weixin/show.html',friends=friends)
+    try:
+        delete_all()
+        get_friends()
+        friends = Friend.objects().all().order_by('nickname')
+        return render_template('weixin/show.html',friends=friends)
+    except Exception as e:
+        print(e)
+        delete_all()
+        return redirect(url_for('weixin.login'))
 
 @weixin.route('/update_friend/<username>')
 def update_friend(username):
@@ -94,6 +101,7 @@ def delete_friend(username):
 
 @weixin.route('/logout')
 def logout():
+    delete_all()
     itchat.logout()
     return redirect(url_for('weixin.login'))
 
