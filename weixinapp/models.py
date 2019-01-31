@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-26 15:20:30
-@LastEditTime: 2019-01-28 08:52:52
+@LastEditTime: 2019-01-31 23:18:57
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -65,5 +65,19 @@ class User(db.Document):
             self.remarkname = self.nickname
         return f'<【{self.myname}】user:{self.remarkname}>'
 
+
+class Message(db.Document):
+    meta = {
+        'collection': 'Message',
+    }
+    message = db.StringField(required=True)
+    create_at = db.DateTimeField(default=datetime.now)
+    update_at = db.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f'<Msg:{self.message[:10]}>'
+    
+    def __repr__(self):
+        return f'<Msg:{self.message[:10]}>'
 
 

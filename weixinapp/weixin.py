@@ -1,14 +1,14 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-27 08:43:40
-@LastEditTime: 2019-01-31 08:36:21
+@LastEditTime: 2019-01-31 23:30:27
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 @github: https://github.com/longfengpili
 '''
 from flask import Blueprint, render_template, request, flash, redirect, url_for,make_response,send_file
-from .models import Friend
+from .models import Friend,Message
 import itchat
 import time
 
@@ -114,6 +114,16 @@ def send_friend(username,note):
         itchat.send_msg(msg=note,toUserName=username)
         notenum = friend.notenum
         friend.update(notenum=notenum + 1)
+
+    return redirect(url_for('weixin.show'))
+
+@weixin.route('/add_msg',methods=["POST"])
+def add_msg():
+    message = request.form.get('note')
+    msg = Message.objects(message=message).first()
+    if not msg:
+        msg = Message(message=message)
+        msg.save()
 
     return redirect(url_for('weixin.show'))
 

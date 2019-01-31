@@ -1,7 +1,7 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-27 12:09:41
- * @LastEditTime: 2019-01-31 09:23:14
+ * @LastEditTime: 2019-01-31 23:15:54
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -10,15 +10,17 @@
 <html>
 
 <head>
-    <title>login</title>
+    <title>show</title>
 </head>
 
 <body>
-    <a><script>get_inputvalue()</script></a>
-    <a href="{{url_for('weixin.logout')}}"><button>logout</button></a>
+    <a href="{{url_for('weixin.logout')}}"><button align="right">logout</button></a>
 
     {% if friends %}
-    <td align="center"><input type="text" name="note" value="节日快乐" id="festival"/></td>
+    <form action="add_msg" method="POST">
+    <p align="center"><input type="text" height="10" width="30"  name="note" value="节日快乐" id="festival"/></p>
+    <p align="center"><input type="submit" name="add_msg" value="add msg" /></p>
+    </form>
     <table border="1px" align="center" cellspacing="0" cellpadding="6" width="100" ;>
         <tr>
             <th>nickname</th>
@@ -39,7 +41,7 @@
                 <a href="{{url_for('weixin.delete_friend',username=friend.username)}}"><button>delete</button></a>
             </td>
             <td>
-                <a href="{{url_for('weixin.send_friend',username=friend.username,note='get_inputvalue()')}}" id="send_friend"><button>send</button></a>
+                <a href="{{url_for('weixin.send_friend',username=friend.username,note='')}}" id="send_friend"><button>send</button></a>
             </td>
             {% endif %}
         </tr>
