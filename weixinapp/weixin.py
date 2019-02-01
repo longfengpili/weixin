@@ -1,7 +1,7 @@
 '''
 @Author: longfengpili
 @Date: 2019-01-27 08:43:40
-@LastEditTime: 2019-01-31 23:30:27
+@LastEditTime: 2019-02-01 09:15:56
 @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -11,8 +11,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from .models import Friend,Message
 import itchat
 import time
+import random
 
 weixin = Blueprint('weixin',__name__)
+
+GET_FRIENDS = False
 
 
 @weixin.route('/login')
@@ -44,6 +47,7 @@ def check_login():
 
 # @weixin.route('/get_friends')  
 def get_friends():
+    global GET_FRIENDS
     friends = itchat.get_friends(True)
     myname = friends[0]['NickName']
     friend = Friend.objects(myname=myname).first()
@@ -61,6 +65,7 @@ def get_friends():
             friend = Friend(myname=myname,username=username,nickname=nickname,remarkname=remarkname,
                                 sex=sex,signature=signature,province=province,city=city)
             friend.save()
+    GET_FRIENDS = True
     
     # return redirect(url_for('weixin.show'))
 
@@ -74,15 +79,22 @@ def delete_all():
 
 @weixin.route('/show')  
 def show(): 
-    try:
-        delete_all()
-        get_friends()
+    global GET_FRIENDS
+    if GET_FRIENDS == True:
         friends = Friend.objects().all().order_by('nickname')
+        # for friend in friends:
+        #     print(friend)
         return render_template('weixin/show.html',friends=friends)
-    except Exception as e:
-        print(e)
-        delete_all()
-        return redirect(url_for('weixin.login'))
+    else:
+        try:
+            delete_all()
+            get_friends()
+            friends = Friend.objects().all().order_by('nickname')
+            return render_template('weixin/show.html',friends=friends)
+        except Exception as e:
+            print(e)
+            delete_all()
+            return redirect(url_for('weixin.login'))
 
 @weixin.route('/update_friend/<username>')
 def update_friend(username):
@@ -105,13 +117,15 @@ def logout():
     itchat.logout()
     return redirect(url_for('weixin.login'))
 
-@weixin.route('/send_friend/<username>/<note>')
-def send_friend(username,note):
+@weixin.route('/send_friend/<username>')
+def send_friend(username):
     friend = Friend.objects(username=username).first()
+    msg = Message.objects().all()
+    msg = random.choice(msg).message
     if friend:
         print(friend)
-        print(note)
-        itchat.send_msg(msg=note,toUserName=username)
+        print(msg)
+        itchat.send_msg(msg=msg,toUserName=username)
         notenum = friend.notenum
         friend.update(notenum=notenum + 1)
 

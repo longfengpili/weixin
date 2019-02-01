@@ -1,7 +1,7 @@
 <!--
  * @Author: longfengpili
  * @Date: 2019-01-27 12:09:41
- * @LastEditTime: 2019-01-31 23:15:54
+ * @LastEditTime: 2019-02-01 09:16:38
  * @coding: 
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
@@ -18,7 +18,8 @@
 
     {% if friends %}
     <form action="add_msg" method="POST">
-    <p align="center"><input type="text" height="10" width="30"  name="note" value="节日快乐" id="festival"/></p>
+    <!-- <p align="center"><input type="text" name="note" value="节日快乐" id="festival"/></p> -->
+    <p align="center"><textarea name="note" style="width: 477px; height: 89px;" id="festival"></textarea>
     <p align="center"><input type="submit" name="add_msg" value="add msg" /></p>
     </form>
     <table border="1px" align="center" cellspacing="0" cellpadding="6" width="100" ;>
@@ -30,10 +31,10 @@
         </tr>
         {% for friend in friends %}
         <tr>
-            {% if friend.remarkname %}
-            <td align="center">{{friend.nickname}}</td>
+            <!-- {% if friend.remarkname %} -->
+            <td align="center" style="white-space: nowrap">{{friend.nickname}}</td>
             <form action="update_friend/{{friend.username}}"></form>
-            <td align="center"><input type="text" name="remarkname" value="{{friend.remarkname}}" /></td>
+            <td align="center" style="white-space: nowrap"><input type="text" name="remarkname" value="{{friend.remarkname}}" /></td>
             <td align="center">{{friend.notenum}}</td>
             <td align="center"><input type="submit" name="update" value="update" /></td>
             </form>
@@ -41,9 +42,9 @@
                 <a href="{{url_for('weixin.delete_friend',username=friend.username)}}"><button>delete</button></a>
             </td>
             <td>
-                <a href="{{url_for('weixin.send_friend',username=friend.username,note='')}}" id="send_friend"><button>send</button></a>
+                <a href="{{url_for('weixin.send_friend',username=friend.username)}}" id="send_friend"><button>send</button></a>
             </td>
-            {% endif %}
+            <!-- {% endif %} -->
         </tr>
         {% endfor %}
     </table>
